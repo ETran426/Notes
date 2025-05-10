@@ -1,0 +1,77 @@
+\documentclass[a4paper,12pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% Page layout
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{STM32 Notes}}
+\fancyhead[R]{\thepage}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% Custom commands
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\important}[1]{\textbf{\textit{#1}}}
+
+% Document
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{STM32 Notes}} \\
+    \vspace{0.5cm}
+    {\large \textit{Date: 5/9 \today}}
+\end{center}
+
+\vspace{1cm}
+
+\section*{Overview}
+Use the data sheet for help with the GPIO.
+
+\section{How to start blinking an LED}
+\subsection{Key Concepts}
+- Your variables are stored where your ram starts in the memory map. You can then calculate the RAM by viewing how the size of the "island", the used address space, changes when you add or remove variables. The size of the island is the difference between the start and end address of the RAM.
+You can find this information using a "data sheet". They are pretty large but are designed to work like a dictionary.
+Older microcontrollers using simple linear address space.
+S_RAM stand for static RAM. \\
+
+- If a GPIO address appears empty, it's often because the hardware block is switched off to save power. This is common practice called clock gating. Go back to the data sheet to find about this "clock gating" and look for the GPIO bit.
+Copy the base address and there should be an offset needed to get the complete regiester address. 
+Once to get to the location, you can change the data on the memory.
+In his case bit 5 resulted to a hexa value of 0x20. \\
+
+- Still need to set the output pins for colors are digital outputs. \\
+
+- All there is controlling the LED boils down to writing numbers to specific memeory addresses and this can be done with using pointers.
+Allows you to write any number to any memory address you choose.
+Arm registers are unsigned integers. Enclose the whole pointer cast in parentheses and notice that this whole thing is a pointer to unsigned int. Allows you to dereference the pointer using the star operator.
+
+- Blinking an LED requires a delay, wasted clock cycles, to be able to watch it blink.
+
+
+\subsection{Code Snippet}
+\begin{verbatim}
+// Example code snippet
+void exampleFunction() {
+    *((unsigned int*)address in hexa) = 0x20U;
+}
+\end{verbatim}
+
+\section{Topic 2}
+\subsection{Notes}
+Write detailed notes here.
+
+\subsection{References}
+- Reference 1 \\
+- Reference 2
+
+\end{document}
